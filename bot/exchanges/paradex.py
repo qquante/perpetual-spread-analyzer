@@ -7,7 +7,7 @@ import time
 import os
 import orjson
 import websockets
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from typing import Dict, List, Tuple, TYPE_CHECKING
 
 from bot.config import DEBUG
