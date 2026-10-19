@@ -50,7 +50,9 @@ These results apply to the selected checks on the preparation copy. They do not 
 
 ## Limits and current status
 
-This contains real order/signing paths. Scripts named test may contact exchanges or place orders; they were not executed. No profitability, latency or execution guarantee is established.
+This contains real order/signing paths. Legacy exchange scripts named test may contact exchanges or place orders; those live scripts were not executed. The two new rounding tests use an in-memory SDK replacement. No profitability, latency or execution guarantee is established.
+
+Quantity rounding currently uses `Decimal.quantize`. The offline regression covers decimal-power increments; arbitrary steps such as `0.025` still require dedicated step-multiple handling and tests before execution.
 
 This private snapshot is for code and portfolio review. Generated runtime material and unreviewed binary assets may be excluded. [Review notes](docs/REVIEW.md) record preparation scope, findings and outstanding validation.
 
