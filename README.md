@@ -40,9 +40,11 @@ Start from an isolated environment. Use `.env.example` when present and inspect 
 
 ## Validation
 
-Static parsing checked 35 Python files and 0 strict JSON files. Python syntax errors: 0; JSON errors: 0. No functional test/build result is claimed for this preparation.
+Static parsing checked 35 Python files and 0 strict JSON files. Python syntax errors: 0; JSON errors: 0. The selected offline suite passed.
 
-Available test scripts are inventoried in [the review notes](docs/REVIEW.md). Choose offline checks before operating any integration.
+```console
+python -m unittest discover -s tests -p test_offline_rounding.py -v
+```
 
 These results apply to the selected checks on the preparation copy. They do not establish deployment readiness, full coverage, live provider availability or measured performance. CI definitions, when present under `docs/ci-templates/`, are inactive review templates; no remote CI badge is claimed.
 

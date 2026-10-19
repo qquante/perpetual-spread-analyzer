@@ -4,7 +4,7 @@
 
 This review combines file inspection, manifest/README analysis, static parsing and selected offline tests. It is not a complete manual line-by-line audit of every source file, penetration test or production certification.
 
-- Source files by language: {"Python": 35}.
+- Source files by language: {"Python": 36}.
 - Dependency/entrypoint manifests: `requirements.txt`
 - Main inspection locations: `bot/orderbook.py`, `bot/main.py`, `clients/paradex_trading.py`, `arb_executor.py`, `requirements.txt`.
 - Original source folders remain unchanged; this is an isolated preparation copy.
@@ -24,7 +24,7 @@ Unused-code removal requires reference/call analysis plus relevant tests; it is 
 
 ## Validation result
 
-Static parsing checked 35 Python files and 0 strict JSON files. Python syntax errors: 0; JSON errors: 0. No functional test/build result is claimed for this preparation.
+Static parsing checked 35 Python files and 0 strict JSON files. Python syntax errors: 0; JSON errors: 0. The selected offline suite passed.
 
 No live transaction, order, mining/cloud deployment, Telegram send or model inference is part of the validation reported here. Package installation where required used disabled lifecycle scripts. Full runtime/build validation is pending unless explicitly recorded above.
 
@@ -43,3 +43,7 @@ Before any public release, complete content/asset attribution, dependency and se
 ## Maintainer
 
 [Douglas de Oliveira Silva on LinkedIn](https://www.linkedin.com/in/douglas-silva-data-analyst/) · [GitHub](https://github.com/qquante)
+
+## Additional static diagnostics
+
+Ruff fatal Python diagnostics: **0**. No finding was reported by this selected rule set; this is not a full code audit. See [structured diagnostics](STATIC_REVIEW.json).
