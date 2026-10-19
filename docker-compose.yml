@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # ==========================================================================
+  # ARBITRAGE EXECUTOR - Main bot
+  # ==========================================================================
+  executor:
+    build: .
+    container_name: arb-executor
+    restart: unless-stopped
+    environment:
+      # Trading mode (from .env)
+      - DRY_RUN=${DRY_RUN:-true}
+      
+      # Backpack credentials (ED25519 base64)
+      - BACKPACK_API_KEY=${BACKPACK_API_KEY:-}
+      - BACKPACK_API_SECRET=${BACKPACK_API_SECRET:-}
+      
+      # Paradex credentials (Ethereum L1 - for first onboarding)
+      - PARADEX_L1_ADDRESS=${PARADEX_L1_ADDRESS:-}
+      - PARADEX_L1_PRIVATE_KEY=${PARADEX_L1_PRIVATE_KEY:-}
+      # Paradex credentials (L2 Subkey - recommended after onboarding)
+      - PARADEX_L2_ADDRESS=${PARADEX_L2_ADDRESS:-}
+      - PARADEX_L2_PRIVATE_KEY=${PARADEX_L2_PRIVATE_KEY:-}
+      
+      # Configuration
+      - MIN_SPREAD=0.10
+      - MIN_PROFIT_USD=0.50
+      - MAX_CONCURRENT_TRADES=3
+    volumes:
+      - ./data:/app/data
+    networks:
+      - arb-network
+
+  # ==========================================================================
+  # SCANNER - View-only scanner (optional)
+  # ==========================================================================
+  scanner:
+    build: .
+    container_name: arb-scanner
+    command: python mvp_scanner.py
+    restart: unless-stopped
+    networks:
+      - arb-network
+    profiles:
+      - scanner
+
+  # ==========================================================================
+  # POSTGRES - Trade history (optional)
+  # ==========================================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: arb-postgres
+    environment:
+      - POSTGRES_USER=arb
+      - POSTGRES_PASSWORD=arb123
+      - POSTGRES_DB=arbitrage
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - arb-network
+    profiles:
+      - db
+
+networks:
+  arb-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
