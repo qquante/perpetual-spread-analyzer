@@ -1,78 +1,42 @@
 # Perpetual Spread Analyzer
 
-**Cross-market order books, spread research and separate execution adapters.**
-
 ![Language: Python](https://img.shields.io/badge/Language-Python-3776AB?style=flat-square&logo=python) ![Feed: WebSocket](https://img.shields.io/badge/Feed-WebSocket-555555?style=flat-square) [![License: MIT](https://img.shields.io/badge/License-MIT-555555?style=flat-square)](LICENSE)
 
-[Overview](#overview) · [Quickstart](#quickstart) · [Example](#example) · [Validation](#validation) · [Documentation](#documentation)
+An experimental cross-exchange perpetual-market toolkit combining order-book handling, spread detection and execution integrations for Backpack and Paradex.
 
-## Overview
+The detector considers both buy/sell directions and estimates the opportunity after configured fees. It caps size by displayed liquidity and an order-notional limit, while tracking cooldown and concurrent execution state.
 
-An experimental perpetual-market toolkit with order-book handling, spread analysis and exchange execution integrations.
+## How an opportunity is selected
 
-**Stack:** Python · httpx · websockets · sortedcontainers · cryptography · Paradex SDK
+In [detector.py](bot/engine/detector.py), a candidate must pass spread and estimated net-profit thresholds. When both directions qualify, the detector can retain the larger estimate. Existing open-position state also influences whether a new execution is attempted.
 
-## Signal generation and order execution are distinct
+The rough research relationship is:
 
-| Component | Behavior |
-| --- | --- |
-| Books | Exchange integrations normalize market observations. |
-| Analysis | Spread and risk modules evaluate cross-market conditions. |
-| Execution | Separate adapters implement exchange order/signing paths. |
-
-## Processing path
-
-```mermaid
-flowchart LR
-  N0["Exchange WebSocket books"]
-  N1["normalized order-book state"]
-  N2["spread/risk logic"]
-  N3["optional execution adapter"]
-N0 --> N1 --> N2 --> N3
+```text
+estimated net = quantity × (sell price − buy price) − configured exchange fees
 ```
 
-## Quickstart
+Displayed size and an estimated spread are not executable liquidity guarantees. Fees, slippage, stale books and asymmetric fills can invalidate a quoted opportunity.
+
+## Offline rounding regression
 
 ```console
-python -m venv .venv
-# Activate .venv, then:
-python -m pip install -r requirements.txt
-python -m unittest discover -s tests -p test_offline_rounding.py -v
+python -m unittest tests.test_offline_rounding -v
 ```
 
-The commands above install prerequisites or run the specified offline checks. Live collection, cloud operations, messaging and trading are separate operational steps when present.
+Run from the repository root. This focused suite replaces the SDK boundary in memory. Files named `test_live_*`, onboarding, WebSocket and order tests are manual/provider-facing diagnostics and are not a safe unattended unit-test batch.
 
-## Example
+## Code boundaries
 
-**Inspect the workflow**
-
-Use the focused rounding suite to inspect an offline exchange-boundary case with an in-memory SDK replacement. Follow a normalized book into spread logic before considering any execution command. A quoted spread is distinct from a filled trade after fees and slippage.
-
-## Configuration and storage
-
-Python, HTTP/WebSocket clients and exchange SDK integrations. [.env.example](.env.example) names credentials and dry-run settings. Root requirements do not declare a database; market/execution state is primarily in memory.
-
-## Repository guide
-
-| Location | Responsibility |
+| Area | Source |
 | --- | --- |
-| [bot/engine/detector.py](bot/engine/detector.py) | Spread detection |
-| [bot/engine/executor.py](bot/engine/executor.py) | Execution boundary |
-| [bot/exchanges](bot/exchanges) | Exchange integrations |
-| [tests/test_offline_rounding.py](tests/test_offline_rounding.py) | Focused offline regression |
+| Book representation | [bot/orderbook.py](bot/orderbook.py) |
+| Opportunity selection | [bot/engine/detector.py](bot/engine/detector.py) |
+| Execution coordination | [bot/engine/executor.py](bot/engine/executor.py) |
+| Provider integration | [bot/exchanges](bot/exchanges), [clients/paradex_trading.py](clients/paradex_trading.py) |
 
-## Validation
+Python dependencies include HTTP/WebSocket clients, sorted book containers, cryptography and the Paradex SDK. Configuration and keys are local operator inputs. Launching the bot can place real orders; no live profit or current exchange compatibility is established by the offline rounding check.
 
-These checks use offline fixtures or controlled backends.
+**Technology:** Python · httpx · websockets · sortedcontainers · cryptography · Paradex SDK
 
-## Scope and operational boundaries
-
-Legacy scripts named test may query exchanges or place real orders. The focused offline suite is deliberately separate. No latency, execution-quality or profitability guarantee follows from it.
-
-## Documentation
-
-- The repository guide above links directly to the implementation and configuration files.
-
-## License and attribution
-
-Project-authored source code is licensed under the [MIT License](LICENSE). Third-party components and datasets retain their respective rights and licenses.
+Project-authored source: [MIT](LICENSE). Third-party components retain their own notices and terms.
