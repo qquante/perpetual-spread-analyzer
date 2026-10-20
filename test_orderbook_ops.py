@@ -17,9 +17,7 @@ print("=" * 60)
 
 ob = FastOrderbook()
 
-# ============================================================================
 # TEST 1: INSERT (set_full)
-# ============================================================================
 print("\n[TEST 1] INSERT via set_full...")
 bids = [(100.0, 10.0), (99.5, 20.0), (99.0, 15.0)]
 asks = [(100.5, 5.0), (101.0, 8.0), (101.5, 12.0)]
@@ -36,9 +34,7 @@ assert ob.best_bid == 100.0
 assert ob.best_ask == 100.5
 print("  [PASS] INSERT works!")
 
-# ============================================================================
 # TEST 2: UPDATE (change quantity at existing price)
-# ============================================================================
 print("\n[TEST 2] UPDATE (change qty at price 100.0)...")
 print(f"  Before: price=100.0, qty={ob.bids[100.0]}")
 
@@ -49,9 +45,7 @@ assert ob.bids[100.0] == 50.0, f"Expected qty=50, got {ob.bids[100.0]}"
 assert ob.best_bid_qty == 50.0, f"best_bid_qty should be 50, got {ob.best_bid_qty}"
 print("  [PASS] UPDATE works!")
 
-# ============================================================================
 # TEST 3: INSERT NEW LEVEL via update
-# ============================================================================
 print("\n[TEST 3] INSERT NEW LEVEL (add price 100.25)...")
 print(f"  Bid levels before: {len(ob.bids)}")
 
@@ -65,9 +59,7 @@ assert ob.best_bid == 100.25, f"Best bid should be 100.25, got {ob.best_bid}"
 assert 100.25 in ob.bids
 print("  [PASS] INSERT NEW LEVEL works!")
 
-# ============================================================================
 # TEST 4: DELETE (qty=0 removes level)
-# ============================================================================
 print("\n[TEST 4] DELETE (remove price 100.25 with qty=0)...")
 print(f"  Bid levels before: {len(ob.bids)}")
 
@@ -81,9 +73,7 @@ assert 100.25 not in ob.bids, "100.25 should be deleted"
 assert ob.best_bid == 100.0, f"Best bid should be back to 100.0, got {ob.best_bid}"
 print("  [PASS] DELETE works!")
 
-# ============================================================================
 # TEST 5: DELETE BEST BID
-# ============================================================================
 print("\n[TEST 5] DELETE BEST BID (remove 100.0)...")
 print(f"  Best bid before: {ob.best_bid}")
 
@@ -95,9 +85,7 @@ assert ob.best_bid == 99.5, f"Next best bid should be 99.5, got {ob.best_bid}"
 assert 100.0 not in ob.bids
 print("  [PASS] DELETE BEST BID works!")
 
-# ============================================================================
 # TEST 6: PERFORMANCE
-# ============================================================================
 print("\n[TEST 6] PERFORMANCE...")
 
 # Reset orderbook
@@ -120,9 +108,7 @@ print(f"  10,000 updates in {total_time:.2f}ms")
 print(f"  Per update: {per_update:.2f} microseconds")
 print("  [PASS] Performance test complete!")
 
-# ============================================================================
 # SUMMARY
-# ============================================================================
 print("\n" + "=" * 60)
 print("SUMMARY")
 print("=" * 60)

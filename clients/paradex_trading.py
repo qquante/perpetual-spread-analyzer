@@ -72,9 +72,7 @@ class ParadexClient:
         
         print(f"[PARADEX] Connected. L2: {hex(self.account.l2_address)[:16]}...")
     
-    # ========================================================================
     # ACCOUNT
-    # ========================================================================
     
     def get_account_summary(self):
         """Get account summary."""
@@ -88,9 +86,7 @@ class ParadexClient:
         """Get open positions."""
         return self.api.fetch_positions()
     
-    # ========================================================================
     # MARKET DATA
-    # ========================================================================
     
     def get_markets(self) -> dict:
         """Get all markets."""
@@ -104,9 +100,7 @@ class ParadexClient:
         """Get orderbook for a market."""
         return self.api.fetch_orderbook(market=market, params={"depth": depth})
     
-    # ========================================================================
     # ORDERS
-    # ========================================================================
     
     def place_limit_order(
         self,
@@ -189,9 +183,7 @@ class ParadexClient:
         return self.api.fetch_fills(params=params)
 
 
-# ============================================================================
 # TEST
-# ============================================================================
 
 def test_paradex():
     """Test ParadexClient."""

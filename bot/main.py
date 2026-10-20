@@ -62,9 +62,7 @@ class ArbitrageBot:
         self.detector = OpportunityDetector(self)
         self.executor = OrderExecutor(self)
     
-    # ========================================================================
     # LOGGING
-    # ========================================================================
     
     def _log(self, msg: str):
         ts = datetime.now().strftime("%H:%M:%S.%f")[:-3]
@@ -80,17 +78,13 @@ class ArbitrageBot:
         ts = datetime.now().strftime("%H:%M:%S.%f")[:-3]
         print(f"[{ts}] ERR: {msg}", flush=True)
     
-    # ========================================================================
     # DELEGATE METHODS
-    # ========================================================================
     
     def _check_and_execute(self, pair: str):
         """Delegate to detector."""
         self.detector.check_and_execute(pair)
     
-    # ========================================================================
     # POSITION MANAGEMENT
-    # ========================================================================
     
     async def _position_cleanup_loop(self):
         """Close stale positions."""
@@ -105,9 +99,7 @@ class ArbitrageBot:
                 self._log(f"TIMEOUT {pair} - closing position")
                 del self.open_positions[pair]
     
-    # ========================================================================
     # STATISTICS
-    # ========================================================================
     
     async def _stats_loop(self):
         """Print statistics periodically."""
@@ -161,9 +153,7 @@ class ArbitrageBot:
             
             print(f"{'='*80}\n", flush=True)
     
-    # ========================================================================
     # DISCOVERY
-    # ========================================================================
     
     async def discover(self):
         """Discover common trading pairs between exchanges."""
@@ -219,9 +209,7 @@ class ArbitrageBot:
         
         return len(self.pairs)
     
-    # ========================================================================
     # MAIN
-    # ========================================================================
     
     async def run(self):
         """Main entry point."""

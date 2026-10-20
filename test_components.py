@@ -20,9 +20,7 @@ print("=" * 60)
 print("BOT COMPONENT TESTS")
 print("=" * 60)
 
-# ============================================================================
 # TEST 1: Config
-# ============================================================================
 print("\n[TEST 1] Config...")
 try:
     from bot.config import (
@@ -39,9 +37,7 @@ try:
 except Exception as e:
     print(f"  [FAIL] {e}")
 
-# ============================================================================
 # TEST 2: Models
-# ============================================================================
 print("\n[TEST 2] Models...")
 try:
     from bot.models import Opportunity
@@ -57,9 +53,7 @@ try:
 except Exception as e:
     print(f"  [FAIL] {e}")
 
-# ============================================================================
 # TEST 3: FastOrderbook
-# ============================================================================
 print("\n[TEST 3] FastOrderbook...")
 try:
     from bot.orderbook import FastOrderbook
@@ -93,9 +87,7 @@ except Exception as e:
     import traceback
     traceback.print_exc()
 
-# ============================================================================
 # TEST 4: Backpack API (live connection)
-# ============================================================================
 print("\n[TEST 4] Backpack API...")
 try:
     import httpx
@@ -123,9 +115,7 @@ try:
 except Exception as e:
     print(f"  [FAIL] {e}")
 
-# ============================================================================
 # TEST 5: Paradex API (live connection)
-# ============================================================================
 print("\n[TEST 5] Paradex API...")
 try:
     import httpx
@@ -152,9 +142,7 @@ try:
 except Exception as e:
     print(f"  [FAIL] {e}")
 
-# ============================================================================
 # TEST 6: Spread Calculation
-# ============================================================================
 print("\n[TEST 6] Spread Calculation...")
 try:
     # Simulated prices
@@ -173,9 +161,7 @@ try:
 except Exception as e:
     print(f"  [FAIL] {e}")
 
-# ============================================================================
 # TEST 7: Price Rounding (BUG CHECK!)
-# ============================================================================
 print("\n[TEST 7] Price Rounding (BUG CHECK!)...")
 try:
     from decimal import Decimal, ROUND_HALF_UP
@@ -214,9 +200,7 @@ try:
 except Exception as e:
     print(f"  [FAIL] {e}")
 
-# ============================================================================
 # SUMMARY
-# ============================================================================
 print("\n" + "=" * 60)
 print("SUMMARY")
 print("=" * 60)
